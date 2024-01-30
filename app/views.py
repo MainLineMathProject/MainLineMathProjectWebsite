@@ -9,7 +9,7 @@ from sendgrid.helpers.mail import Mail
 
 views = Blueprint('views', __name__)
 
-with open(".keys/sendgrid.key") as fp:
+with open(".local_keys/sendgrid.key") as fp:
 	sg = SendGridAPIClient(fp.read())
 
 akismet = Akismet('d806ad6390dc', blog="https://www.mainlinemathproject.org/",

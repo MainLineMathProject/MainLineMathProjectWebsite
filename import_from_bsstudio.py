@@ -28,7 +28,7 @@ sitemap_robots_destination = 'C:/Users/josep/PycharmProjects/MainLineMathProject
 
 failed_img_url = "https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
 
-google_service_account_key = "./.keys/mainlinemathproject-bade1ac06345.json"
+google_service_account_key = "./.local_keys/mainlinemathproject-bade1ac06345.json"
 google_creds, _ = google.auth.load_credentials_from_file(google_service_account_key)
 google_drive_service = build('drive', 'v3', credentials=google_creds)
 
