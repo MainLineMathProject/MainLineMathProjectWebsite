@@ -1,16 +1,14 @@
 import json
 
-import requests
 import werkzeug.datastructures.headers
 from akismet import Akismet
-from flask import Blueprint, render_template, send_from_directory, redirect, request, url_for
+from flask import Blueprint, render_template, send_from_directory, redirect, request, url_for, current_app
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
 views = Blueprint('views', __name__)
 
-with open(".local_keys/sendgrid.key") as fp:
-	sg = SendGridAPIClient(fp.read())
+sg = SendGridAPIClient(current_app.config['SENDGRID_API_KEY'])
 
 akismet = Akismet('d806ad6390dc', blog="https://www.mainlinemathproject.org/",
                   application_user_agent="MainlineMathProject Website/1.0.0")

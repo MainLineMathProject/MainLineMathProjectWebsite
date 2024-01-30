@@ -20,6 +20,10 @@ from imagekitio.models.CreateFolderRequestOptions import CreateFolderRequestOpti
 from imagekitio.models.DeleteFolderRequestOptions import DeleteFolderRequestOptions
 from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 source_directory = 'C:/Users/josep/OneDrive/Documents/BootstrapStudioDesigns/exports/'
 
 assets_destination = 'C:/Users/josep/PycharmProjects/MainLineMathProjectWebsite/app/assets/'
@@ -28,8 +32,8 @@ sitemap_robots_destination = 'C:/Users/josep/PycharmProjects/MainLineMathProject
 
 failed_img_url = "https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
 
-google_service_account_key = "./.local_keys/mainlinemathproject-bade1ac06345.json"
-google_creds, _ = google.auth.load_credentials_from_file(google_service_account_key)
+google_service_account_key = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_KEY"])
+google_creds, _ = google.auth.load_credentials_from_dict(google_service_account_key)
 google_drive_service = build('drive', 'v3', credentials=google_creds)
 
 cloudinary.config(
@@ -46,11 +50,11 @@ imagekit = ImageKit(
 
 image_directory = 'C:/Users/josep/PycharmProjects/MainLineMathProjectWebsite/app/assets/img/'
 
-VERBOSE_STEPS = True
+VERBOSE = True
 
 
 def vprint(print_string):
-	if VERBOSE_STEPS:
+	if VERBOSE:
 		print(print_string)
 
 
@@ -208,7 +212,7 @@ def grab_tutor_data():
 			"photo": photo
 		}
 
-	gc = gspread.service_account(google_service_account_key)
+	gc = gspread.service_account_from_dict(google_service_account_key)
 
 	sheet = gc.open_by_key("1d-VCm9gh9UweCaPjTE5taCtWGpJ4hOeKP0smgr3nKTQ").get_worksheet(0)
 
