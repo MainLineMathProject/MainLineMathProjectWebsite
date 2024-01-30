@@ -1,0 +1,6 @@
+flask[async]~=2.3.3
+imagekitio~=3.1.0
+gspread~=5.10.0
+cloudinary~=1.34.0
+sendgrid~=6.10.0
+python-akismet~=0.4.3
