@@ -1,26 +1,12 @@
-import io
 import json
 import os
-import random
 import shutil
-import string
-from urllib.parse import parse_qs
-from urllib.parse import urlparse
 
-import cloudinary
-import cloudinary.uploader
-import google.auth
-import google.auth
-import gspread
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from googleapiclient.http import MediaIoBaseDownload
+from dotenv import load_dotenv
 from imagekitio import ImageKit
 from imagekitio.models.CreateFolderRequestOptions import CreateFolderRequestOptions
 from imagekitio.models.DeleteFolderRequestOptions import DeleteFolderRequestOptions
 from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
-
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -30,25 +16,15 @@ assets_destination = 'C:/Users/josep/PycharmProjects/MainLineMathProjectWebsite/
 html_destination = 'C:/Users/josep/PycharmProjects/MainLineMathProjectWebsite/app/templates/'
 sitemap_robots_destination = 'C:/Users/josep/PycharmProjects/MainLineMathProjectWebsite/app/assets/'
 
-failed_img_url = "https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
-
-google_service_account_key = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_KEY"])
-google_creds, _ = google.auth.load_credentials_from_dict(google_service_account_key)
-google_drive_service = build('drive', 'v3', credentials=google_creds)
-
-cloudinary.config(
-	cloud_name="dlmvik29e",
-	api_key="556959486252824",
-	api_secret="H6ewqmkZDtFwHcc8s6pk0CRWQlQ"
-)
-
-imagekit = ImageKit(
-	private_key='private_SeCd2DxPQ/Db/68Szo9UcttTvns=',
-	public_key='public_4a7f/gFoCLvr9q/CVpGB7yKPdMA=',
-	url_endpoint='https://ik.imagekit.io/mainlinemathproject'
-)
-
 image_directory = 'C:/Users/josep/PycharmProjects/MainLineMathProjectWebsite/app/assets/img/'
+
+imagekit_key = json.loads(os.environ["IMAGEKIT_KEY"])
+imagekit = ImageKit(
+	private_key=imagekit_key['private-key'],
+	public_key=imagekit_key['public-key'],
+	url_endpoint=imagekit_key['url-endpoint']
+)
+
 
 VERBOSE = True
 
@@ -123,24 +99,6 @@ def upload_images_to_imagekit():
 	vprint(f"Uploaded local images to imagekitio...")
 
 
-def download_file_from_drive(real_file_id):
-	try:
-		request = google_drive_service.files().get_media(fileId=real_file_id)
-		file = io.BytesIO()
-		downloader = MediaIoBaseDownload(file, request)
-		done = False
-		while done is False:
-			status, done = downloader.next_chunk()
-	except HttpError as error:
-		print(F'An error occurred while downloading a file: {error}')
-		file = None
-	return file.getvalue()
-
-
-def random_string(n=16):
-	return "".join(random.choice(string.ascii_lowercase) for _ in range(n))
-
-
 def change_image_references_to_imagekit():
 	for file in os.listdir("app/templates"):
 		with open(f"app/templates/{file}", "r") as fp:
@@ -163,113 +121,13 @@ def remove_local_images():
 	print("Removed local image files...")
 
 
-def fix_tutor_photo(old_photo_url):
-	try:
-		file_id = parse_qs(urlparse(old_photo_url).query)["id"][0]
-		file = download_file_from_drive(file_id)
-		file_name = random_string()
+if __name__ == "__main__":
+	update_assets_folder()
+	update_html_templates()
+	update_sitemap_robots()
 
-		try:
-			cloudinary.uploader.upload((file_name, file), public_id=file_name)
-			results = cloudinary.CloudinaryImage(file_name).image(
-				gravity="face", crop="thumb", aspect_ratio="1", height=256, fetch_format="auto"
-			)
-			new_photo_url = results.split("=")[2].split("\"")[1]
-		except cloudinary.exceptions.Error as error:
-			print(f"CLOUDINARY ERROR WITH {old_photo_url} IMAGE!!!")
-			new_photo_url = failed_img_url
-	except KeyError as e:
-		print(f"DOWNLOAD ERROR WITH {old_photo_url} IMAGE!!!")
-		new_photo_url = failed_img_url
+	upload_images_to_imagekit()
+	change_image_references_to_imagekit()
+	remove_local_images()
 
-	return new_photo_url
-
-
-def download_file(real_file_id):
-	try:
-		file_id = real_file_id
-
-		request = google_drive_service.files().get_media(fileId=file_id)
-		file = io.BytesIO()
-		downloader = MediaIoBaseDownload(file, request)
-		done = False
-		while done is False:
-			status, done = downloader.next_chunk()
-	except HttpError as error:
-		print(F'An error occurred while downloading a file: {error}')
-		file = None
-	return file.getvalue()
-
-
-def grab_tutor_data():
-	def jsonify_tutor(name, grade, subjects, photo):
-		last_name, first_name = name.split(", ")
-		return {
-			"first_name": first_name,
-			"last_name": last_name,
-			"grade": grade,
-			"subjects": subjects.split(", "),
-			"photo": photo
-		}
-
-	gc = gspread.service_account_from_dict(google_service_account_key)
-
-	sheet = gc.open_by_key("1d-VCm9gh9UweCaPjTE5taCtWGpJ4hOeKP0smgr3nKTQ").get_worksheet(0)
-
-	names = sheet.col_values(2)[1:]
-	grades = sheet.col_values(5)[1:]
-	teachable_subjects = sheet.col_values(8)[1:]
-
-	photos = sheet.col_values(9)[1:]
-
-	tutor_data = {f"{''.join(names[i].split(', '))}{grades[i][0:2]}": jsonify_tutor(
-		names[i],
-		grades[i],
-		teachable_subjects[i],
-		photos[i]
-	) for i, _ in enumerate(names)}
-
-	return tutor_data
-
-
-def update_tutor_data():
-	tutor_data = grab_tutor_data()
-
-	# Failed attempt at threading:
-
-	# with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-	# 	future_to_tutor_id = {executor.submit(fix_tutor_photo, tutor["photo"]): tutor_id
-	# 	                      for tutor_id, tutor in tutor_data.items()}
-	# 	for future in concurrent.futures.as_completed(future_to_tutor_id):
-	# 		tutor_id = future_to_tutor_id[future]
-	# 		try:
-	# 			tutor_data[future_to_tutor_id[future]] = future.result()
-	# 		except Exception as e:
-	# 			print(f"failed {tutor_id}")
-	# 		print(f"Fixed tutor photo: {tutor_id}...")
-
-	for tutor_id, tutor in tutor_data.items():
-		tutor["photo"] = fix_tutor_photo(tutor["photo"])
-		vprint(f"Fixed tutor photo {tutor_id}...")
-
-	if not os.path.isdir("app/assets/json"):
-		os.mkdir("app/assets/json")
-
-	tutor_list = list(tutor_data.values())
-	tutor_list.sort(key=lambda x: x["grade"][0:2], reverse=True)
-
-	with open("app/assets/json/tutor_data.json", "w") as fp:
-		json.dump(tutor_list, fp, indent=2)
-
-
-update_assets_folder()
-update_html_templates()
-update_sitemap_robots()
-
-upload_images_to_imagekit()
-change_image_references_to_imagekit()
-remove_local_images()
-
-update_tutor_data()
-
-print("Finished!")
+	print("Finished!")

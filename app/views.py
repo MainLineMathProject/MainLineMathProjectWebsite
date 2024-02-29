@@ -10,7 +10,7 @@ views = Blueprint('views', __name__)
 
 sg = SendGridAPIClient(current_app.config['SENDGRID_API_KEY'])
 
-akismet = Akismet('d806ad6390dc', blog="https://www.mainlinemathproject.org/",
+akismet = Akismet(current_app.config['AKISMET_KEY'], blog="https://www.mainlinemathproject.org/",
                   application_user_agent="MainlineMathProject Website/1.0.0")
 
 
