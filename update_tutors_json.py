@@ -17,7 +17,11 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseDownload
 
+import requests as req
+
 load_dotenv()
+
+BLOB_READ_WRITE_TOKEN = os.environ["BLOB_READ_WRITE_TOKEN"]
 
 failed_img_url = "https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
 
@@ -149,14 +153,17 @@ def update_tutor_data():
 		vprint(f"Fixing tutor photo {tutor_id}... ", end="")
 		tutor["photo"] = fix_tutor_photo(tutor["photo"])
 
-	if not os.path.isdir("app/assets/json"):
-		os.mkdir("app/assets/json")
-
 	tutor_list = list(tutor_data.values())
 	tutor_list.sort(key=lambda x: x["grade"][0:2], reverse=True)
 
-	with open("app/assets/json/tutor_data.json", "w") as fp:
-		json.dump(tutor_list, fp, indent=2)
+	req.put(f"https://blob.vercel-storage.com/tutor_data.json", data=json.dumps(tutor_list), headers={
+		"access": "public",
+		"authorization": f"Bearer {BLOB_READ_WRITE_TOKEN}",
+		"x-api-version": "4",
+		"x-content-type": 'application/json',
+		"x-cache-control-max-age": f"{365 * 24 * 60 * 60}",
+		"x-add-random-suffix": "false"
+	})
 
 
 if __name__ == "__main__":

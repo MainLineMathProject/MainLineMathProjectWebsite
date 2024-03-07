@@ -52,12 +52,6 @@ def tutors():
 	return render_template("tutors.html")
 
 
-@views.route('/tutor_data/', methods=['GET'])
-def get_tutor_data():
-	with open("app/assets/json/tutor_data.json") as fp:
-		return json.load(fp)
-
-
 @views.route('/contacts/', methods=['GET'])
 def contacts():
 	return render_template("contacts.html")
