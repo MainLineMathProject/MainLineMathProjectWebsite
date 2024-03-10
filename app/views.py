@@ -1,7 +1,5 @@
-import json
+import os
 
-import werkzeug.datastructures.headers
-from akismet import Akismet
 from flask import Blueprint, render_template, send_from_directory, redirect, request, url_for, current_app
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
@@ -10,8 +8,9 @@ views = Blueprint('views', __name__)
 
 sg = SendGridAPIClient(current_app.config['SENDGRID_API_KEY'])
 
-akismet = Akismet(current_app.config['AKISMET_KEY'], blog="https://www.mainlinemathproject.org/",
-                  application_user_agent="MainlineMathProject Website/1.0.0")
+mlmp_email = "mainlinemathproject@gmail.com"
+if os.environ.get('FLASK_ENV') == 'development':
+	mlmp_email = os.environ.get('DEV_EMAIL')
 
 
 @views.route("/assets/<path:path>")
@@ -33,8 +32,7 @@ def html_redirect(path):
 @views.route('/', methods=['GET'])
 def index():
 	email_sent = 'email_sent' in request.args and request.args.get("email_sent")
-	is_spam = 'is_spam' in request.args and request.args.get("is_spam")
-	return render_template("index.html", email_sent=email_sent, is_spam=is_spam)
+	return render_template("index.html", email_sent=email_sent)
 
 
 @views.route('/about/', methods=['GET'])
@@ -65,24 +63,18 @@ def contact_form_submitted():
 	subject = request.form.get("subject")
 	message = request.form.get("message")
 
-	headers: werkzeug.datastructures.headers.Headers = request.headers
-	is_spam = bool(akismet.check(
-		user_ip=request.remote_addr,
-		user_agent=headers.get("User-Agent"),
-		comment_author_email=request.form.get("email"),
-		comment_content=request.form.get("subject") + " " + request.form.get("message")
-	))
-
 	email_sent = False
-	if is_spam:
+	if request.form.get("antispam") != "":
 		print("SPAM DETECTED! EMAIL NOT SENT!")
 	else:
+		form_responses = request.form.to_dict()
+		form_responses.pop("antispam")
 		message = Mail(
 			from_email='mlmp.automated@gmail.com',
-			to_emails=['mainlinemathproject@gmail.com', email],
+			to_emails=[mlmp_email, email],
 			subject=f'Contact form filled by {name}!',
 			html_content=f"A contact form was filled out with details:" +
-			             "".join(f"<br>{key.title()}: {value}" for key, value in request.form.items())
+			             "".join(f"<br>{key.title()}: {value}" for key, value in form_responses.items())
 		)
 		try:
 			sg.send(message)
@@ -90,7 +82,7 @@ def contact_form_submitted():
 		except Exception as e:
 			print(e)
 
-	return redirect(url_for(".index", email_sent=email_sent, is_spam=is_spam))
+	return redirect(url_for(".index", email_sent=email_sent))
 
 
 @views.route('/signup/', methods=['GET'])
