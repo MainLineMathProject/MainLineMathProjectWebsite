@@ -65,11 +65,11 @@ def contact_form_submitted():
 
 	email_sent = False
 	print(dict(request.form))
-	if False: #request.form.get("antispam") != "":
+	if request.form.get("g-recaptcha-response") == "":
 		print("SPAM DETECTED! EMAIL NOT SENT!")
 	else:
 		form_responses = request.form.to_dict()
-		form_responses.pop("antispam")
+		form_responses.pop("g-recaptcha-response")
 		message = Mail(
 			from_email='mlmp.automated@gmail.com',
 			to_emails=[mlmp_email, email],
