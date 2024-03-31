@@ -102,6 +102,16 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <link rel="stylesheet" href="/assets/css/styles.min.css">
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+window.onload = function() {
+  var recaptcha = document.forms["contact-form"]["g-recaptcha-response"];
+  recaptcha.required = true;
+  recaptcha.oninvalid = function(e) {
+    // do something
+    alert("Please complete the captcha");
+  }
+}
+</script>
 </head>
 
 <body>
@@ -177,7 +187,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-xl-5 col-xxl-4 offset-md-6 offset-xl-7 offset-xxl-8">
                                         <div>
-                                            <form class="border rounded shadow p-3 p-md-4 p-lg-5" method="post" style="background: var(--bs-body-bg);">
+                                            <form class="border rounded shadow p-3 p-md-4 p-lg-5" id="contact-form" method="post" style="background: var(--bs-body-bg);">
                                                 <div>
                                                     <h3 class="text-center mb-3">Get in Touch</h3>
                                                     <p style="font-size: 16px;">We are not affiliated with Ludington Library. Please use this form for questions.</p>
