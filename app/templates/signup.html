@@ -93,6 +93,17 @@
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <link rel="stylesheet" href="/assets/css/styles.min.css">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+window.onload = function() {
+  var recaptcha = document.forms["contact-form"]["g-recaptcha-response"];
+  recaptcha.required = true;
+  recaptcha.oninvalid = function(e) {
+    // do something
+    alert("Please complete the captcha");
+  }
+}
+</script>
 </head>
 
 <body>

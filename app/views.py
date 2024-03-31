@@ -52,7 +52,6 @@ def tutors():
 
 @views.route('/contacts/', methods=['GET'])
 def contacts():
-	print("Someone wants to contact!")
 	return render_template("contacts.html")
 
 
@@ -65,11 +64,12 @@ def contact_form_submitted():
 	message = request.form.get("message")
 
 	email_sent = False
-	if request.form.get("antispam") != "":
+	print(dict(request.form))
+	if request.form.get("g-recaptcha-response") == "":
 		print("SPAM DETECTED! EMAIL NOT SENT!")
 	else:
 		form_responses = request.form.to_dict()
-		form_responses.pop("antispam")
+		form_responses.pop("g-recaptcha-response")
 		message = Mail(
 			from_email='mlmp.automated@gmail.com',
 			to_emails=[mlmp_email, email],
