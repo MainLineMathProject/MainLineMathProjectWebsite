@@ -93,6 +93,7 @@
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <link rel="stylesheet" href="/assets/css/styles.min.css">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -143,7 +144,9 @@
                                                 <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Email" required="" pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)(\.[a-zA-Z]{2,5}){1,2}$"></div>
                                                 <div class="mb-3"><input class="form-control" type="text" name="subject" placeholder="Subject" required=""></div>
                                                 <div class="mb-3"><textarea class="form-control" name="message" placeholder="Message" rows="6"></textarea></div>
-                                                <div class="invisible mb-3"><textarea class="form-control d-none" name="antispam" placeholder="Anti-Spam Box" rows="1"></textarea></div>
+                                                <div class="mb-3">
+                                                    <div class="g-recaptcha" data-sitekey="6LeE72MpAAAAAHbKA1Cq1-7Lna2XJbsDovWLMf-J"></div>
+                                                </div>
                                                 <div class="mb-3" style="text-align: left;"><button class="btn btn-primary" type="submit" style="width: 100%;">Send </button></div>
                                             </form>
                                         </div>

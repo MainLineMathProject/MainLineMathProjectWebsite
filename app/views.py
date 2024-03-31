@@ -52,7 +52,6 @@ def tutors():
 
 @views.route('/contacts/', methods=['GET'])
 def contacts():
-	print("Someone wants to contact!")
 	return render_template("contacts.html")
 
 
