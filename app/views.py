@@ -64,7 +64,8 @@ def contact_form_submitted():
 	message = request.form.get("message")
 
 	email_sent = False
-	if request.form.get("antispam") != "":
+	print(dict(request.form))
+	if False: #request.form.get("antispam") != "":
 		print("SPAM DETECTED! EMAIL NOT SENT!")
 	else:
 		form_responses = request.form.to_dict()
