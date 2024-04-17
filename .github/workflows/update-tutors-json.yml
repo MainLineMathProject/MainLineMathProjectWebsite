@@ -1,5 +1,5 @@
 name: Update tutors.json
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+run-name: ${{ github.actor }} is updating tutors.json 🚀
 on: [workflow_dispatch]
 jobs:
   Update-Tutors:
@@ -20,5 +20,5 @@ jobs:
           echo "CLOUDINARY_KEY={\"api-key\": \"432235888828572\", \"api-secret\": \"4FfuGaEFabmye4xPt5HfuR01CRE\", \"cloud-name\": \"dlmvik29e\"}" >> "$GITHUB_ENV"    
       - name: Run code
         run: |
-          echo hi
+          python3 update_tutors_json.py
           
