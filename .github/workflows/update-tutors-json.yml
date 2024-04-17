@@ -12,7 +12,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install urllib3 cloudinary googleapiclient google-auth python-dotenv
+          pip install urllib3 cloudinary google-api-python-client google-auth python-dotenv
       - name: Set environment variables
         run: |
           echo "BLOB_READ_WRITE_TOKEN=vercel_blob_rw_3ZH9UaJ4n3DL5ZBo_0BQ5usdKRPx75hWBr2VHCwqbKvCkwu" >> "$GITHUB_ENV"
