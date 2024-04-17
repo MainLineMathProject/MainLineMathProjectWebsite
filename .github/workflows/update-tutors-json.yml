@@ -1,0 +1,24 @@
+name: Update tutors.json
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [workflow_dispatch]
+jobs:
+  Update-Tutors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install urllib cloudinary googleapiclient google-auth python-dotenv
+      - name: Set environment variables
+        run: |
+          echo "BLOB_READ_WRITE_TOKEN=vercel_blob_rw_3ZH9UaJ4n3DL5ZBo_0BQ5usdKRPx75hWBr2VHCwqbKvCkwu" >> "$GITHUB_ENV"
+          echo "GOOGLE_SERVICE_ACCOUNT_KEY={\"type\": \"service_account\", \"project_id\": \"mainlinemathproject\", \"private_key_id\": \"bade1ac063451bf231b4a7d79c7166dfb2a76160\", \"private_key\": \"-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCa6rli1yClLfvG\nd/N3fc4jHCvo4TGKirCrZ7da3OtocWsyYkBSO7dfw7RtanpyPFjLDuPxWm0brNNg\nHyq6MgZIfld8vPfixTqK/08k4Qks4Lv9/izWOpWiyEv3VZD88HqlRmelKHBDIMzE\nh+vPrLuqJIv2J0f3xs8aflgiztatEEVQZrMJ+9EceUQmKuq+2QtriwpZXrLi+Ac+\n/yjh2n3aBDcnCl0cl1Ilf1BU8/Yjy00rfcTZRHQUfS8rVHM9SEnnWlhGvJomDHpW\n6+TMsP+WloAJGGQmMl5rImpG3zYjig4xOIc+2fi0nID693L5ynzpbzVizDLm+sOn\nZSXQ6T5TAgMBAAECggEAOWT6Lxjl0tzA+YxqStx0uURQLlT0TlBI2RAxebv8iXLv\n1Lha/Tx7mUK//4Oh/t3FxeFr6PjoEIdMvsF9SoOLGWOZlTDLpBwPLv0c/NxU0mgm\nrhjz0qDc3HTZ1DZC47tSrRXzA1kCkpQ92RhEcOodkxE8O4PdIXrqMvYZQDgih/Y5\n9+mqM1FmKQpc66wGDXcIbn9nMkQEe1t2zo4t6ZuUQ3xXLv5EoMxuxx8A8ghcsSV9\n3jHrnoeqD3x9iN7eJrKBxoIbokmeR1lvyhVB0XurpcNV2JvZM/n7YtzoEGvGkRor\n515RLTBCcibEjUMqpvgFqBkbFAox0ZmTq9u900HRyQKBgQDSR1AoEtFK8AdgpYDc\ncHEcNXpXLxJW9wK5jjFNE4F+3WfaXypSD5rVN/aXOxyp86LSKk+APNmYK1Jmm+AW\nrrmXyQUXQoVaxqoQcfaKEL3+i9Ozlj1+5CQhbN6QSX16DUO6M9l0+9PX6n0P/f/l\nlJmY5EqB95IMskvU/NvpX+rSaQKBgQC8mdO2SIzEo4xxV9c2CLk3Av6a80/eD4r7\nUIWGkzsMe09qJBwU3bARfrLOdilRZCay0Hjm1pJxg+8J77pLxAg1juFVJngCiuUa\neG3UgMueH8o9u7VLWh0h3zIaN4qEUZr8kCeiKfUkJK72OFMDJfRxn1wH7aLWKCoC\nHpaxX5h7WwKBgQCfbfRHPeUzVQOy8ijeed44jg9g9M6J4yRMvZOBpc1j+8hW2BqF\nN1GkYZb0GJxl+tQzVmMKjphH+Gi0ZXCkofsTKxVSClyDc+bTKyTKj2EOEsQDAGFF\nyQHf2eRxL1cUZ+Q21EMGoDyBE0eZDXKshVtjgYtAOQ2h1LkMFl9B9ThcKQKBgG3d\nai/4iVAPOcPY+Lw4TrSWIPzgmfjwsvR9Tps7bx1xQ6zABj+9eFBorv6IZL9OCSEH\nQjaubjaENZ5jMPHr6yBP8EGrHCPXB2jpGIm+0V52hFh73Ttc7jWKEGSnUCCObSuN\nShk0OeJpICa8XtcpqAD8ZR8VNlNsqDP936jJ2EibAoGADSVQ7JTLExfF2E4BG8dg\nX/g4VhEd5UhcJbyWZSUX1koG2zLA98rfG+tgpfWZojZ2xVbIDLOVEM3kVV3aA2iF\nIW+U8jOUzwhhrXvDy60RA8ttnztqACECqOGoLapRSB+zFOVzDVSuKVBAK6NVxXkX\nAv3PCNuVU3kvDqdcWkFxOdM=\n-----END PRIVATE KEY-----\n\", \"client_email\": \"mainlinemathprojectbot@mainlinemathproject.iam.gserviceaccount.com\", \"client_id\": \"110368132604899262655\", \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\", \"token_uri\": \"https://oauth2.googleapis.com/token\", \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\", \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/mainlinemathprojectbot%40mainlinemathproject.iam.gserviceaccount.com\", \"universe_domain\": \"googleapis.com\"}" >> "$GITHUB_ENV"
+          echo "CLOUDINARY_KEY={\"api-key\": \"432235888828572\", \"api-secret\": \"4FfuGaEFabmye4xPt5HfuR01CRE\", \"cloud-name\": \"dlmvik29e\"}" >> "$GITHUB_ENV"    
+      - name: Run code
+        run: |
+          echo hi
+          
