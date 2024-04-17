@@ -20,7 +20,7 @@ jobs:
           echo "CLOUDINARY_KEY={\"api-key\": \"432235888828572\", \"api-secret\": \"4FfuGaEFabmye4xPt5HfuR01CRE\", \"cloud-name\": \"dlmvik29e\"}" >> "$GITHUB_ENV"    
       - name: List files
         run: |
-          echo ls
+          ls
       - name: Run code
         run: |
           python3 update_tutors_json.py
