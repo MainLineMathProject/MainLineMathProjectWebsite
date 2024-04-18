@@ -1,7 +1,7 @@
-flask[async]~=3.0.1
+flask[async]~=3.0.3
 imagekitio~=3.2.0
 gspread~=6.0.0
-cloudinary~=1.34.0
+cloudinary~=1.39.1
 sendgrid~=6.11.0
 Werkzeug~=3.0.1
 python-dotenv~=1.0.1
