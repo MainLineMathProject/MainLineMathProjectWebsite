@@ -12,14 +12,11 @@ import cloudinary.api
 import google.auth
 import google.auth
 import gspread
-from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseDownload
 
 import requests as req
-
-load_dotenv()
 
 BLOB_READ_WRITE_TOKEN = os.environ["BLOB_READ_WRITE_TOKEN"]
 

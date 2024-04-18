@@ -64,7 +64,7 @@ def contact_form_submitted():
 	message = request.form.get("message")
 
 	email_sent = False
-	print(dict(request.form))
+	# print(dict(request.form))
 	if request.form.get("g-recaptcha-response") == "":
 		print("SPAM DETECTED! EMAIL NOT SENT!")
 	else:
