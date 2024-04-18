@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install urllib3 cloudinary google-api-python-client google-auth python-dotenv gspread
+          pip install urllib3 cloudinary google-api-python-client google-auth gspread
       - name: Run code
         run: |
           python3 update_tutors_json.py
