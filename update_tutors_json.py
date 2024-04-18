@@ -158,7 +158,7 @@ def update_tutor_data():
 		"authorization": f"Bearer {BLOB_READ_WRITE_TOKEN}",
 		"x-api-version": "4",
 		"x-content-type": 'application/json',
-		"x-cache-control-max-age": f"{7 * 24 * 60 * 60}",  # Cached for 1 week
+		"x-cache-control-max-age": f"{24 * 60 * 60}",  # Cached for 1 day
 		"x-add-random-suffix": "false"
 	})
 
