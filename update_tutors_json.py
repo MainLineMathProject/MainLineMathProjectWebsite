@@ -112,7 +112,8 @@ def grab_tutor_data():
 
 	gc = gspread.service_account_from_dict(google_service_account_key)
 
-	sheet = gc.open_by_key("1d-VCm9gh9UweCaPjTE5taCtWGpJ4hOeKP0smgr3nKTQ").get_worksheet(0)
+	# 1d-VCm9gh9UweCaPjTE5taCtWGpJ4hOeKP0smgr3nKTQ
+	sheet = gc.open_by_key(os.environ["TUTORS_GOOGLE_SHEET_ID"]).get_worksheet(0)
 
 	names = sheet.col_values(2)[1:]
 	grades = sheet.col_values(5)[1:]
