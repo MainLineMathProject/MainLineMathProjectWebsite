@@ -8,6 +8,7 @@ jobs:
       BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
       GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
       CLOUDINARY_KEY: ${{ secrets.CLOUDINARY_KEY }}
+      TUTORS_GOOGLE_SHEET_ID: ${{ vars.TUTORS_GOOGLE_SHEET_ID }}
     steps:
       - name: Check out the repository to the runner
         uses: actions/checkout@v4
