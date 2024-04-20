@@ -65,7 +65,7 @@ def contact_form_submitted():
 		email_verification_response = requests.get(f"https://www.ipqualityscore.com/api/json/email/"
 		                                           f"{EMAIL_VERIFICATION_API_KEY}/{email_to_check}").json()
 		email_score = email_verification_response["overall_score"]
-		return email_score > 1
+		return email_score <= 1
 
 	name = request.form.get("name")
 	email = request.form.get("email")
