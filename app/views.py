@@ -1,5 +1,6 @@
 import os
 
+import requests
 from flask import Blueprint, render_template, send_from_directory, redirect, request, url_for, current_app
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
@@ -11,6 +12,8 @@ sg = SendGridAPIClient(current_app.config['SENDGRID_API_KEY'])
 mlmp_email = "mainlinemathproject@gmail.com"
 if os.environ.get('FLASK_ENV') == 'development':
 	mlmp_email = os.environ.get('DEV_EMAIL')
+
+EMAIL_VERIFICATION_API_KEY = os.environ.get("EMAIL_VERIFICATION_API_KEY")
 
 
 @views.route("/assets/<path:path>")
@@ -58,21 +61,28 @@ def contacts():
 @views.route('/contacts/', methods=['POST'])
 @views.route('/', methods=['POST'])
 def contact_form_submitted():
+	def email_is_spam(email_to_check):
+		email_verification_response = requests.get(f"https://www.ipqualityscore.com/api/json/email/"
+		                                           f"{EMAIL_VERIFICATION_API_KEY}/{email_to_check}").json()
+		email_score = email_verification_response["overall_score"]
+		return email_score > 1
+
 	name = request.form.get("name")
 	email = request.form.get("email")
 	subject = request.form.get("subject")
 	message = request.form.get("message")
 
 	email_sent = False
-	# print(dict(request.form))
-	if request.form.get("g-recaptcha-response") == "":
+	if request.form.get("g-recaptcha-response") == "" or email_is_spam(email):
 		print("SPAM DETECTED! EMAIL NOT SENT!")
 	else:
 		form_responses = request.form.to_dict()
 		form_responses.pop("g-recaptcha-response")
+		if "submit" in form_responses:
+			form_responses.pop("submit")
 		message = Mail(
 			from_email='mlmp.automated@gmail.com',
-			to_emails=[mlmp_email, email],
+			to_emails=[mlmp_email],
 			subject=f'Contact form filled by {name}!',
 			html_content=f"A contact form was filled out with details:" +
 			             "".join(f"<br>{key.title()}: {value}" for key, value in form_responses.items())
