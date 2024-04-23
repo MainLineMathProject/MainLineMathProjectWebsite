@@ -1,7 +1,7 @@
 flask[async]~=3.0.3
-imagekitio~=3.2.0
-gspread~=6.0.0
-cloudinary~=1.39.1
+imagekitio~=4.0.1
+gspread~=6.1.0
+cloudinary~=1.40.0
 sendgrid~=6.11.0
 python-dotenv~=1.0.1
 requests~=2.31.0
