@@ -1,6 +1,6 @@
 import os
 
-import requests
+import requests as req
 from flask import Blueprint, render_template, send_from_directory, redirect, request, url_for, current_app
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
@@ -14,6 +14,8 @@ if os.environ.get('FLASK_ENV') == 'development':
 	mlmp_email = os.environ.get('DEV_EMAIL')
 
 EMAIL_VERIFICATION_API_KEY = os.environ.get("EMAIL_VERIFICATION_API_KEY")
+
+BLOB_READ_WRITE_TOKEN = os.environ["BLOB_READ_WRITE_TOKEN"]
 
 
 @views.route("/assets/<path:path>")
@@ -62,7 +64,7 @@ def contacts():
 @views.route('/', methods=['POST'])
 def contact_form_submitted():
 	def email_is_spam(email_to_check):
-		email_verification_response = requests.get(f"https://www.ipqualityscore.com/api/json/email/"
+		email_verification_response = req.get(f"https://www.ipqualityscore.com/api/json/email/"
 		                                           f"{EMAIL_VERIFICATION_API_KEY}/{email_to_check}").json()
 		email_score = email_verification_response["overall_score"]
 		return email_score <= 1
@@ -74,7 +76,17 @@ def contact_form_submitted():
 
 	email_sent = False
 	if request.form.get("g-recaptcha-response") == "" or email_is_spam(email):
-		print("SPAM DETECTED! EMAIL NOT SENT!")
+		current_log = req.get("https://3zh9uaj4n3dl5zbo.public.blob.vercel-storage.com/contact_form_log.txt").text
+
+		new_log = f"{name}-{email}-{subject}-{message}"
+
+		req.put(f"https://blob.vercel-storage.com/contact_form_log.txt", data=current_log + "\n" + new_log, headers={
+			"access": "public",
+			"authorization": f"Bearer {BLOB_READ_WRITE_TOKEN}",
+			"x-api-version": "4",
+			"x-content-type": 'text/plain',
+			"x-add-random-suffix": "false"
+		})
 	else:
 		form_responses = request.form.to_dict()
 		form_responses.pop("g-recaptcha-response")
