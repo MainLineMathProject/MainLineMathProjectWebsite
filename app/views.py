@@ -1,4 +1,5 @@
 import os
+import time
 
 import requests as req
 from flask import Blueprint, render_template, send_from_directory, redirect, request, url_for, current_app
@@ -78,7 +79,7 @@ def contact_form_submitted():
 	if request.form.get("g-recaptcha-response") == "" or email_is_spam(email):
 		current_log = req.get("https://3zh9uaj4n3dl5zbo.public.blob.vercel-storage.com/contact_form_log.txt").text
 
-		new_log = f"{name}-{email}-{subject}-{message}"
+		new_log = f"{time.asctime()}-----{name}-----{email}-----{subject}-----{message}"
 
 		req.put(f"https://blob.vercel-storage.com/contact_form_log.txt", data=current_log + "\n" + new_log, headers={
 			"access": "public",
