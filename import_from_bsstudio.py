@@ -10,13 +10,13 @@ from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
 
 load_dotenv()
 
-source_directory = 'C:/Users/josep/OneDrive/Documents/BootstrapStudioDesigns/exports/'
+source_directory = 'bsstudio_export/'
 
-assets_destination = 'C:/Users/josep/PycharmProjects/MainLineMathProjectWebsite/app/assets/'
-html_destination = 'C:/Users/josep/PycharmProjects/MainLineMathProjectWebsite/app/templates/'
-sitemap_robots_destination = 'C:/Users/josep/PycharmProjects/MainLineMathProjectWebsite/app/assets/'
+assets_destination = 'app/assets/'
+html_destination = 'app/templates/'
+sitemap_robots_destination = 'app/assets/'
 
-image_directory = 'C:/Users/josep/PycharmProjects/MainLineMathProjectWebsite/app/assets/img/'
+image_directory = 'app/assets/img/'
 
 imagekit_key = json.loads(os.environ["IMAGEKIT_KEY"])
 imagekit = ImageKit(
