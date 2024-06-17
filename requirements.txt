@@ -5,3 +5,5 @@ cloudinary~=1.40.0
 sendgrid~=6.11.0
 python-dotenv~=1.0.1
 requests~=2.31.0
+pyotp~=2.9.0
+qrcode~=7.4.2
