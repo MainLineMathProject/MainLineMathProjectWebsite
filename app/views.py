@@ -1,22 +1,31 @@
 import os
 import time
 
+import pyotp
 import requests as req
-from flask import Blueprint, render_template, send_from_directory, redirect, request, url_for, current_app
+from flask import Blueprint, render_template, send_from_directory, redirect, request, url_for, current_app, Response
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
+if os.environ.get('FLASK_ENV') == 'development':
+	from dotenv import load_dotenv
+
+	load_dotenv()
+
 views = Blueprint('views', __name__)
 
-sg = SendGridAPIClient(current_app.config['SENDGRID_API_KEY'])
+sg = SendGridAPIClient(os.environ['SENDGRID_API_KEY'])
 
 mlmp_email = "mainlinemathproject@gmail.com"
 if os.environ.get('FLASK_ENV') == 'development':
 	mlmp_email = os.environ.get('DEV_EMAIL')
 
-EMAIL_VERIFICATION_API_KEY = os.environ.get("EMAIL_VERIFICATION_API_KEY")
+EMAIL_VERIFICATION_API_KEY = os.environ["EMAIL_VERIFICATION_API_KEY"]
 
 BLOB_READ_WRITE_TOKEN = os.environ["BLOB_READ_WRITE_TOKEN"]
+
+# MFA_SECRET = os.environ["MFA_SECRET"]
+# totp = pyotp.TOTP(MFA_SECRET)
 
 
 @views.route("/assets/<path:path>")
@@ -66,7 +75,7 @@ def contacts():
 def contact_form_submitted():
 	def email_is_spam(email_to_check):
 		email_verification_response = req.get(f"https://www.ipqualityscore.com/api/json/email/"
-		                                           f"{EMAIL_VERIFICATION_API_KEY}/{email_to_check}").json()
+		                                      f"{EMAIL_VERIFICATION_API_KEY}/{email_to_check}").json()
 		email_score = email_verification_response["overall_score"]
 		return email_score <= 1
 
@@ -112,3 +121,40 @@ def contact_form_submitted():
 @views.route('/signup/', methods=['GET'])
 def signup():
 	return render_template("signup.html")
+
+
+# @views.route('/admin-login/', methods=['GET'])
+# def admin_login():
+# 	return render_template("admin-login.html")
+#
+#
+# valid_admin_creds = []
+
+
+# @views.route('/admin-login/', methods=['POST'])
+# def admin_login_submitted():
+# 	if totp.verify(request.form["otp-code"]):
+# 		auth_code = pyotp.random_base32()
+# 		valid_admin_creds.append((request.remote_addr, auth_code))
+# 		return redirect(url_for(".admin", auth=auth_code))
+# 	else:
+# 		return redirect(url_for(".index"))
+
+
+# @views.route('/admin/', methods=['GET'])
+# def admin():
+# 	if 'auth' in request.args and (request.remote_addr, request.args.get("auth")) in valid_admin_creds:
+# 		return render_template("admin.html")
+# 	else:
+# 		return redirect(url_for(".index"))
+
+
+# @views.route('/admin-logout/', methods=['POST'])
+# def admin_logout():
+# 	auth_code = request.data.decode()
+# 	creds = (request.remote_addr, auth_code)
+#
+# 	if creds in valid_admin_creds:
+# 		valid_admin_creds.remove(creds)
+#
+# 	return redirect(url_for(".index"))
