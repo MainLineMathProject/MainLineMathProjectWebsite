@@ -104,7 +104,7 @@ def contact_form_submitted():
 			form_responses.pop("submit")
 		message = Mail(
 			from_email='mlmp.automated@gmail.com',
-			to_emails=[mlmp_email],
+			to_emails=[mlmp_email, email],
 			subject=f'Contact form filled by {name}!',
 			html_content=f"A contact form was filled out with details:" +
 			             "".join(f"<br>{key.title()}: {value}" for key, value in form_responses.items())
