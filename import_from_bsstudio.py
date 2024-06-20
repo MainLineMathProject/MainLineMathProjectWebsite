@@ -48,8 +48,8 @@ def update_assets_folder():
 
 
 def update_html_templates():
-	if os.path.isdir(html_destination):
-		pass
+	# if os.path.isdir(html_destination):
+	# 	# 	pass
 	html_files = [file for file in os.listdir(source_directory) if file.endswith('.html')]
 	for html_file in html_files:
 		shutil.move(os.path.join(source_directory, html_file), os.path.join(html_destination, html_file))

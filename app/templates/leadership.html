@@ -60,76 +60,12 @@ window.onload = function() {
                 <p class="w-lg-50"></p>
             </div>
         </div>
-        <div class="row gy-4 row-cols-2 row-cols-md-4">
-            <div class="col">
+        <div class="row gy-4 row-cols-2 row-cols-md-4" id="leader-container">
+            <div class="col invisible" id="example-leader">
                 <div class="card border-0 shadow-none">
-                    <div class="card-body text-center d-flex flex-column align-items-center p-0"><img class="rounded-circle mb-3 fit-cover" width="130" height="130" src="https://ik.imagekit.io/mainlinemathproject/leadership/moskow_cropped.jpeg">
-                        <h5 class="fw-bold text-primary card-title mb-0"><strong>Matthew Moskow</strong></h5>
-                        <p class="text-muted card-text mb-2">President &amp; Co-Founder</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-0 shadow-none">
-                    <div class="card-body text-center d-flex flex-column align-items-center p-0"><img class="rounded-circle mb-3 fit-cover" width="130" height="130" src="https://ik.imagekit.io/mainlinemathproject/leadership/marina_cropped.jpg">
-                        <h5 class="fw-bold text-primary card-title mb-0"><strong>Marina Anderson</strong></h5>
-                        <p class="text-muted card-text mb-2">Vice President &amp; Co-Founder</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-0 shadow-none">
-                    <div class="card-body text-center d-flex flex-column align-items-center p-0"><img class="rounded-circle mb-3 fit-cover" width="130" height="130" src="https://ik.imagekit.io/mainlinemathproject/leadership/joseph_cropped.jpg">
-                        <h5 class="fw-bold text-primary card-title mb-0"><strong>Joseph Cicalese</strong></h5>
-                        <p class="text-muted card-text mb-2">Website Developer</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-0 shadow-none">
-                    <div class="card-body text-center d-flex flex-column align-items-center p-0"><img class="rounded-circle mb-3 fit-cover" width="130" height="130" src="https://ik.imagekit.io/mainlinemathproject/leadership/jack_cropped.jpeg">
-                        <h5 class="fw-bold text-primary card-title mb-0"><strong>Jack Gallagher</strong></h5>
-                        <p class="text-muted card-text mb-2">Director of Tutoring</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-0 shadow-none">
-                    <div class="card-body text-center d-flex flex-column align-items-center p-0"><img class="rounded-circle mb-3 fit-cover" width="130" height="130" src="https://ik.imagekit.io/mainlinemathproject/leadership/zach_cropped.jpeg">
-                        <h5 class="fw-bold text-primary card-title mb-0"><strong>Zach Braunfeld</strong></h5>
-                        <p class="text-muted card-text mb-2">Director of Social Media</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-0 shadow-none">
-                    <div class="card-body text-center d-flex flex-column align-items-center p-0"><img class="rounded-circle mb-3 fit-cover" width="130" height="130" src="https://ik.imagekit.io/mainlinemathproject/leadership/jessica_cropped.png">
-                        <h5 class="fw-bold text-primary card-title mb-0"><strong>Jessica Stoloff</strong></h5>
-                        <p class="text-muted card-text mb-2">Director of Scheduling</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-0 shadow-none">
-                    <div class="card-body text-center d-flex flex-column align-items-center p-0"><img class="rounded-circle mb-3 fit-cover" width="130" height="130" src="https://ik.imagekit.io/mainlinemathproject/leadership/kaia_cropped_1.jpg">
-                        <h5 class="fw-bold text-primary card-title mb-0"><strong>Kaia Bachmeier</strong></h5>
-                        <p class="text-muted card-text mb-2">Co-Director of On-Site Operations &amp; Co-Director of Parent Relations</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-0 shadow-none">
-                    <div class="card-body text-center d-flex flex-column align-items-center p-0"><img class="rounded-circle mb-3 fit-cover" width="130" height="130" src="https://ik.imagekit.io/mainlinemathproject/leadership/nico_cropped.jpeg">
-                        <h5 class="fw-bold text-primary card-title mb-0"><strong>Nico Leedy</strong></h5>
-                        <p class="text-muted card-text mb-2">Co-Director of On-Site Operations &amp; Co-Director of Parent Relations</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-0 shadow-none">
-                    <div class="card-body text-center d-flex flex-column align-items-center p-0"><img class="rounded-circle mb-3 fit-cover" width="130" height="130" src="https://ik.imagekit.io/mainlinemathproject/leadership/sadie_cropped.jpeg">
-                        <h5 class="fw-bold text-primary card-title mb-0"><strong>Sadie Gorberg</strong></h5>
-                        <p class="text-muted card-text mb-2">Management Director</p>
+                    <div class="card-body text-center d-flex flex-column align-items-center p-0"><img class="rounded-circle mb-3 fit-cover" width="130" height="130" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+                        <h5 class="fw-bold text-primary card-title mb-0 leader-name"><strong>Name</strong></h5>
+                        <p class="text-muted card-text mb-2 leader-role">Role</p>
                     </div>
                 </div>
             </div>
@@ -144,6 +80,7 @@ window.onload = function() {
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/script.min.js"></script>
+    <script src="/assets/js/leadership_loading.min.js"></script>
 </body>
 
 </html>
