@@ -12,6 +12,7 @@ import cloudinary.api
 import google.auth
 import google.auth
 import gspread
+import requests
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseDownload
@@ -63,7 +64,7 @@ def random_string(n=16):
 def fix_tutor_photo(old_photo_url):
 	try:
 		file_id = parse_qs(urlparse(old_photo_url).query)["id"][0]
-		file = download_file_from_drive(file_id)
+		file = io.BytesIO(requests.get(f"https://lh3.googleusercontent.com/d/{file_id}").content)
 		file_name = random_string()
 
 		try:
