@@ -160,6 +160,10 @@ def update_tutor_data():
 	tutor_list = list(tutor_data.values())
 	tutor_list.sort(key=lambda x: x["grade"][0:2], reverse=True)
 
+	print(tutor_list)
+
+	print("Uploading to Vercel... ", end="")
+
 	req.put(f"https://blob.vercel-storage.com/tutor_data.json", data=json.dumps(tutor_list), headers={
 		"access": "public",
 		"authorization": f"Bearer {BLOB_READ_WRITE_TOKEN}",
@@ -168,6 +172,8 @@ def update_tutor_data():
 		"x-cache-control-max-age": f"{24 * 60 * 60}",  # Cached for 1 day
 		"x-add-random-suffix": "false"
 	})
+
+	print("success!")
 
 
 if __name__ == "__main__":
