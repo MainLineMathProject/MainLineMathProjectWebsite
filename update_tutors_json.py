@@ -19,9 +19,9 @@ from googleapiclient.http import MediaIoBaseDownload
 
 import requests as req
 
-from dotenv import load_dotenv
-
-load_dotenv()
+# from dotenv import load_dotenv
+#
+# load_dotenv()
 
 BLOB_READ_WRITE_TOKEN = os.environ["BLOB_READ_WRITE_TOKEN"]
 
