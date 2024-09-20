@@ -4,11 +4,6 @@ on: [workflow_dispatch]
 jobs:
   Update-Tutors:
     runs-on: ubuntu-latest
-    env: 
-      BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
-      GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
-      CLOUDINARY_KEY: ${{ secrets.CLOUDINARY_KEY }}
-      TUTORS_GOOGLE_SHEET_ID: ${{ vars.TUTORS_GOOGLE_SHEET_ID }}
     steps:
       - name: Check out the repository to the runner
         uses: actions/checkout@v4
@@ -22,5 +17,5 @@ jobs:
           pip install urllib3 cloudinary google-api-python-client google-auth gspread
       - name: Run code
         run: |
-          python3 update_tutors_json.py
+          python3 update_tutors_json.py --blob-key=${{ secrets.BLOB_READ_WRITE_TOKEN }} --google-key=${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }} --cloudinary-key=${{ secrets.CLOUDINARY_KEY }} --sheet-id=${{ vars.TUTORS_GOOGLE_SHEET_ID }}
           
