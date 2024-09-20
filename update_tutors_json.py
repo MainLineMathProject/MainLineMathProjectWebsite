@@ -33,8 +33,6 @@ google_drive_service = build('drive', 'v3', credentials=google_creds)
 
 cloudinary_key = json.loads(os.environ["CLOUDINARY_KEY"])
 
-print(os.environ["CLOUDINARY_KEY"])
-
 cloudinary.config(
 	cloud_name=cloudinary_key["cloud-name"],
 	api_key=cloudinary_key["api-key"],
@@ -71,7 +69,7 @@ def random_string(n=16):
 def fix_tutor_photo(old_photo_url):
 	try:
 		file_id = parse_qs(urlparse(old_photo_url).query)["id"][0]
-		file = io.BytesIO(requests.get(f"https://lh3.googleusercontent.com/d/{file_id}").content)
+		file = io.BytesIO(requests.get(f"https://lh3.googleusercontent.com/d/{file_id}").content).read()
 		file_name = random_string()
 
 		try:
