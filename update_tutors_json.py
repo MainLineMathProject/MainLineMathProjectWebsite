@@ -1,5 +1,6 @@
 import io
 import json
+import os
 import random
 import string
 from urllib.parse import parse_qs
@@ -17,26 +18,15 @@ from googleapiclient.http import MediaIoBaseDownload
 
 import requests as req
 
-import argparse
-
-parser = argparse.ArgumentParser()
-
-parser.add_argument('--blob-key', action='store', dest='blob_key', required=True,)
-parser.add_argument('--google-key', action='store', dest='google_key', required=True,)
-parser.add_argument('--cloudinary-key', action='store', dest='cloudinary_key', required=True,)
-parser.add_argument('--sheet-id', action='store', dest='sheet_id', required=True,)
-
-args = parser.parse_args()
-
-BLOB_READ_WRITE_TOKEN = args.blob_key
+BLOB_READ_WRITE_TOKEN = os.environ["BLOB_READ_WRITE_TOKEN"]
 
 failed_img_url = "https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
 
-google_service_account_key = json.loads(args.google_key)
+google_service_account_key = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_KEY"])
 google_creds, _ = google.auth.load_credentials_from_dict(google_service_account_key)
 google_drive_service = build('drive', 'v3', credentials=google_creds)
 
-cloudinary_key = json.loads(args.cloudinary_key)
+cloudinary_key = json.loads(os.environ["CLOUDINARY_KEY"])
 cloudinary.config(
 	cloud_name=cloudinary_key["cloud-name"],
 	api_key=cloudinary_key["api-key"],
@@ -122,8 +112,8 @@ def grab_tutor_data():
 
 	gc = gspread.service_account_from_dict(google_service_account_key)
 
-	# 1d-VCm9gh9UweCaPjTE5taCtWGpJ4hOeKP0smgr3nKTQ
-	sheet = gc.open_by_key(args.sheet_id).get_worksheet(0)
+	GOOGLE_SHEET_ID = os.environ["TUTORS_GOOGLE_SHEET_ID"]
+	sheet = gc.open_by_key(GOOGLE_SHEET_ID).get_worksheet(0)
 
 	names = sheet.col_values(2)[1:]
 	grades = sheet.col_values(5)[1:]
