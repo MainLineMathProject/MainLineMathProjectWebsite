@@ -19,6 +19,10 @@ from googleapiclient.http import MediaIoBaseDownload
 
 import requests as req
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 BLOB_READ_WRITE_TOKEN = os.environ["BLOB_READ_WRITE_TOKEN"]
 
 failed_img_url = "https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
@@ -28,6 +32,9 @@ google_creds, _ = google.auth.load_credentials_from_dict(google_service_account_
 google_drive_service = build('drive', 'v3', credentials=google_creds)
 
 cloudinary_key = json.loads(os.environ["CLOUDINARY_KEY"])
+
+print(os.environ["CLOUDINARY_KEY"])
+
 cloudinary.config(
 	cloud_name=cloudinary_key["cloud-name"],
 	api_key=cloudinary_key["api-key"],
