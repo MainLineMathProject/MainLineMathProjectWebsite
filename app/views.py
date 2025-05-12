@@ -20,7 +20,7 @@ mlmp_email = "mainlinemathproject@gmail.com"
 if os.environ.get('FLASK_ENV') == 'development':
 	mlmp_email = os.environ.get('DEV_EMAIL')
 
-EMAIL_VERIFICATION_API_KEY = os.environ["EMAIL_VERIFICATION_API_KEY"]
+SPAM_CHECK_API_KEY = os.environ["EMAIL_VERIFICATION_API_KEY"]
 
 BLOB_READ_WRITE_TOKEN = os.environ["BLOB_READ_WRITE_TOKEN"]
 
@@ -75,17 +75,27 @@ def contacts():
 def contact_form_submitted():
 	def email_is_spam(email_to_check):
 		email_verification_response = req.get(f"https://www.ipqualityscore.com/api/json/email/"
-		                                      f"{EMAIL_VERIFICATION_API_KEY}/{email_to_check}").json()
+		                                      f"{SPAM_CHECK_API_KEY}/{email_to_check}").json()
 		email_score = email_verification_response["overall_score"]
 		return email_score <= 1
+	def ip_is_spam(ip_to_check):
+		ip_verification_response = req.get(f"https://www.ipqualityscore.com/api/json/ip/"
+		                                      f"{SPAM_CHECK_API_KEY}/{ip_to_check}").json()
+		ip_score = ip_verification_response["fraud_score"]
+		return ip_score >= 80
+	def is_spam(email_to_check, ip_to_check):
+		return email_is_spam(email_to_check) or ip_is_spam(ip_to_check)
+
 
 	name = request.form.get("name")
 	email = request.form.get("email")
 	subject = request.form.get("subject")
 	message = request.form.get("message")
 
+	ip = request.remote_addr
+
 	email_sent = False
-	if request.form.get("g-recaptcha-response") == "" or email_is_spam(email):
+	if request.form.get("g-recaptcha-response") == "" or is_spam(email, ip):
 		current_log = req.get("https://3zh9uaj4n3dl5zbo.public.blob.vercel-storage.com/contact_form_log.txt").text
 
 		new_log = f"{time.asctime()}-----{name}-----{email}-----{subject}-----{message}"
